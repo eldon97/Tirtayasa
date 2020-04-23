@@ -137,4 +137,31 @@ class Api_model extends CI_Model {
 		}
 	}
 
+	/**
+	 * Calculate price depends on distance and route price
+	 * @param float $distance The distance
+	 */
+	function calculatePrice($distance) {
+		$distance_in_meter = floor($distance * 1000);
+
+		// TODO: get route price and minimal price from database
+		$oneMeterPrice = 1;
+		$minimalPrice = 2000;
+
+		$price = $distance_in_meter * $oneMeterPrice;
+
+		if ($price < $minimalPrice){
+			$rounded_price = $minimalPrice;
+		} else {
+			$rounded_price = round($price,-3);
+
+			if (substr($price,-3) < 500) {
+				$rounded_price += 500;
+			} else if (substr($price,-3) == 500) {
+				$rounded_price -= 500;
+			}
+		}
+
+		return 'Rp ' . number_format($rounded_price,2,',','.');
+	}
 }
