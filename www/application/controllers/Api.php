@@ -169,7 +169,7 @@ class Api extends CI_Controller {
 					$humanreadable = str_replace('%from', $humanized_from, $humanreadable);
 					$humanreadable = str_replace('%to', $humanized_to, $humanreadable);
 					$humanreadable = str_replace('%distance', $this->Api_model->formatDistance($distance), $humanreadable);
-					$humanreadable = str_replace('%price', $this->Api_model->calculatePrice($distance), $humanreadable);
+					$humanreadable = str_replace('%price', $this->Api_model->calculatePrice($distance,$trackDetail), $humanreadable);
 					$humanreadable = str_replace('%trackname', $trackDetail->trackName, $humanreadable);
 					$humanreadable = str_replace('%tracktype', $trackDetail->trackTypeName, $humanreadable);
 					

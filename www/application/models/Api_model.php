@@ -96,7 +96,7 @@ class Api_model extends CI_Model {
 
 	public function getTrackDetails($means, $meansDetail) {
 		$this->load->database();		
-		$query = $this->db->query('SELECT tracks.trackname AS trackName, tracktypes.name AS trackTypeName, tracktypes.url as ticketURL, tracks.extraParameters AS extraParameters, tracks.internalInfo AS internalInfo, tracktypes.speed AS speed FROM tracks JOIN tracktypes ON tracktypes.trackTypeId=? AND tracks.trackTypeId=? AND tracks.trackid=?', array($means, $means, $meansDetail));
+		$query = $this->db->query('SELECT tarifPerKm,tarifMinimal,tracks.trackname AS trackName, tracktypes.name AS trackTypeName, tracktypes.url as ticketURL, tracks.extraParameters AS extraParameters, tracks.internalInfo AS internalInfo, tracktypes.speed AS speed FROM tracks JOIN tracktypes ON tracktypes.trackTypeId=? AND tracks.trackTypeId=? AND tracks.trackid=?', array($means, $means, $meansDetail));
 		if ($query->num_rows() == 0) {
 			throw new Exception("Can't retrieve the track name from database: $means/$meansDetail");
 		}
@@ -141,12 +141,11 @@ class Api_model extends CI_Model {
 	 * Calculate price depends on distance and route price
 	 * @param float $distance The distance
 	 */
-	function calculatePrice($distance) {
+	function calculatePrice($distance,$trackDetail) {
 		$distance_in_meter = floor($distance * 1000);
 
-		// TODO: get route price and minimal price from database
-		$oneMeterPrice = 1;
-		$minimalPrice = 2000;
+		$oneMeterPrice = $trackDetail->tarifPerKm/1000;
+		$minimalPrice = $trackDetail->tarifMinimal;
 
 		$price = $distance_in_meter * $oneMeterPrice;
 

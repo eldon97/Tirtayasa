@@ -10,6 +10,7 @@ class Migration_Tarifangkot extends CI_Migration {
             'tarifMinimal' => array('type' => 'INT')
         );
         $this->dbforge->add_column('tracks', $fields); 
+        $this->db->set('tarifPerKm', 1000);
         $this->db->set('tarifMinimal', 2000);
         $this->db->update('tracks');
 	}
